@@ -7,6 +7,8 @@ Start Ghidra then click on File/Install Extension/+ and then choose the Plugin z
 
 ## Examples 
 
+ghidra Function Graph vs Alternative Control Flow Graph
+
 ![example1Old](./screenshots/qsort.png)
 ![example1Alt](./screenshots/qsortAlt.png)
 ![example2Old](./screenshots/wcsncmp.png)

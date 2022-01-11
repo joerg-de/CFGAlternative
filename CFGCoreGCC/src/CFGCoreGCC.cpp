@@ -21,6 +21,7 @@
 
 #include "CFG.h"
 #include "CFGEdge.h"
+#include "settings.h"
 
 using namespace std;
 
@@ -96,7 +97,7 @@ int main() {
         	}
         	for (unsigned int i = 0; i < numNodes;i++)
         	{
-        		CFGNode *node = new CFGNode(str1[i].width, str1[i].height, i);
+        		CFGNode *node = new CFGNode(str1[i].width, str1[i].height + InVerticalLineOffset, i);
         		cfg.addNode(*node);
         	}
         	free(str1);
@@ -140,7 +141,7 @@ int main() {
         	{
         		NodeInfoStructBack s;
         		s.x = elem->getx();
-        		s.y = elem->gety();
+        		s.y = elem->gety() + InVerticalLineOffset;
             	if (WriteFile(hPipe, &s, sizeof(s), &dwRead, NULL) == FALSE || sizeof(s) != dwRead)
             	{
             		printf("pipe Error send Node. (%lu)", GetLastError());

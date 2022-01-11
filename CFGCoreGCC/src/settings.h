@@ -21,6 +21,8 @@ static const unsigned int horizontalLineOffset = 10; //this is the space between
 
 static const unsigned int IOhorizontalLineOffset = 10; //this is the space between the lines when they go out and come into a Node
 
+static const unsigned int InVerticalLineOffset = 10; //this is the space between the lines when they go out and come into a Node
+
 static const unsigned int verticalNodeOffset = 10; //this is the space between 2 Nodes Vertical
 
 static const unsigned int horizontalverticalNodeOffset = 10; //this is the space between 2 Nodes Horizontal
