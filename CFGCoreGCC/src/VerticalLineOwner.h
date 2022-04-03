@@ -54,6 +54,8 @@ class VerticalLineOwner {
 
     LineBinder* getInnerLineHolder(LineBinder* a,LineBinder* b);
 
+    void DebugPrintOwnedVLines();
+
  protected:
     std::vector< VerticalLine* > ownedVerticalLines;
     std::vector< uint32_t > tempResort;

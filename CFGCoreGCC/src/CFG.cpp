@@ -330,8 +330,8 @@ void CFG::reduceKinks()
     {
         node->startResort();
         std::sort(
-                    node->getVericalLinesForResort()->begin(),
-                    node->getVericalLinesForResort()->end(),
+                    node->getVericalLinesForResort()->rbegin(),
+                    node->getVericalLinesForResort()->rend(),
                     sortVerticalLines
                     );
         node->endResort();
@@ -342,8 +342,8 @@ void CFG::reduceKinks()
     {
         layer->startResort();
         std::sort(
-                    layer->getVericalLinesForResort()->begin(),
-                    layer->getVericalLinesForResort()->end(),
+                    layer->getVericalLinesForResort()->rbegin(),
+                    layer->getVericalLinesForResort()->rend(),
                     sortVerticalLines
                     );
         layer->endResort();
@@ -381,6 +381,8 @@ void CFG::reduceKinks()
         }
     }
     while(donesomething);
+
+
     /*
     for(auto layer = layers.begin();layer != layers.end();layer++)
     {
@@ -410,6 +412,7 @@ void CFG::reduceKinks()
     {
         node->PullVerticalLines();
     }
+
     for(auto &layer : layers)
     {
         layer->internResort();
