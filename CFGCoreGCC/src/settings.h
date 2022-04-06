@@ -27,12 +27,19 @@ static const unsigned int verticalNodeOffset = 10; //this is the space between 2
 
 static const unsigned int horizontalverticalNodeOffset = 10; //this is the space between 2 Nodes Horizontal
 
+//time stuff
+#ifdef NDEBUG
+#define STARTTIMEANA(x) ((void)0)
+#define TAKETIMEANA(x,y) ((void)0)
+#else
+
 #define STARTTIMEANA(x) \
     std::chrono::steady_clock::time_point t##x = std::chrono::steady_clock::now();
 
 #define TAKETIMEANA(x,y) \
     std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::steady_clock::now() - t##x); \
     /*qDebug() << x << "took me " << time_span.count() << " seconds.";*/
+#endif
 
 #endif // SETTINGS
 

@@ -65,7 +65,7 @@ class CFG {
 
     void cleanup();
 
-    void step1(CFGNode& entry, std::vector<bool> &washerefild, std::vector<bool> &washerefild2);
+    void step1(CFGNode& entry, std::vector<bool> &placedNodesFild, std::vector<bool> &checkedNodesFild);
 
     //todo rework
     Graphsearch search;
