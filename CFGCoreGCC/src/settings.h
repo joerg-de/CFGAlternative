@@ -27,6 +27,8 @@ static const unsigned int verticalNodeOffset = 10; //this is the space between 2
 
 static const unsigned int horizontalverticalNodeOffset = 10; //this is the space between 2 Nodes Horizontal
 
+static const unsigned int vertikalLineMinOffset = 5; //this is the space between 2 Nodes Horizontal
+
 //time stuff
 #ifdef NDEBUG
 #define STARTTIMEANA(x) ((void)0)

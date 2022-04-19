@@ -25,6 +25,8 @@
 #include <cmath>
 #include <limits>
 #include <algorithm>
+#include <ranges>
+#include <stdio.h>
 
 static bool inrange(int val,int range)
 {
@@ -304,49 +306,59 @@ void CFGLayer::sety(int y)
 {
     yPos = y;
 }
-std::vector< HorizontalLine* > CFGLayer::innerSortHorizontalLines(std::vector< HorizontalLine* >::iterator begin,std::vector< HorizontalLine* >::iterator end)
+std::vector< HorizontalLine* > CFGLayer::innerSortHorizontalLines(std::vector< HorizontalLine* >::iterator begin,std::vector< HorizontalLine* >::iterator end, int type)
 {
-    unsigned int distance = std::distance(begin, end);
-    std::vector<std::vector< HorizontalLine* >> upperlines(distance);
-    std::vector<bool> usedlines(distance,false);
+	auto sr = std::ranges::subrange(begin, end);
+    std::vector<unsigned int> upperlines(sr.size());
+    std::vector<bool> usedlines(sr.size(),false);
 
     std::vector< HorizontalLine* > newVector;
 
-    newVector.reserve(distance);
+    newVector.reserve(sr.size());
 
-    for(unsigned int i = 0; i < distance;++i)
+    for(unsigned int i = 0; i < sr.size();++i)
     {
-        upperlines[i] = begin[i]->getAboveList(begin,end);
+        upperlines[i] = begin[i]->getAboveList(begin,end).size();
     }
 
-    while(newVector.size() != distance)
+    while(newVector.size() != sr.size())
     {
         //find best
-        std::vector< HorizontalLine* >::iterator best;
+    	unsigned int best;
         unsigned int quantum = std::numeric_limits<int>::max();
-        int counter = 0;
-        for(auto i = begin;i != end;++i)
+
+        for(unsigned int i = 0;i < sr.size();++i)
         {
-            if(quantum > upperlines[counter].size() && usedlines[counter] == false)
+            if(usedlines[i] == false && (quantum > upperlines[i] ||
+            		(quantum == upperlines[i] && sr[best]->getEdge()->getSrc()->getx() < sr[i]->getEdge()->getSrc()->getx())) )
             {
-                best = i;
-                quantum = upperlines[counter].size();
+            	bool overlap = false;
+            	//check if there is a line that can overlap and skip that
+            	if(begin[i]->isDown() && begin[i]->getNext() == nullptr)
+            	{
+            		for(unsigned int j = 0;j < sr.size();++j)
+            	    {
+            	    	//check if there is a line that can overlap
+            	    	if(j != i && !usedlines[j] && begin[j]->isDown() && begin[j]->getPrev() == nullptr)
+            	    	{
+            	    		if (begin[j]->getxToUpperVertical() == begin[i]->getxToLowerVertical())
+            	    		{
+            	    			overlap = true;
+            	    		}
+            	    	}
+                    }
+            	}
+            	if(!overlap)
+            	{
+            		best = i;
+                	quantum = upperlines[i];
+            	}
             }
-            counter++;
         }
 
         //place best
-        counter = std::distance(begin, best);
-        usedlines[counter] = true;
-        newVector.push_back(*best);
-
-        //remove all that are not inside
-        for(auto i = upperlines.begin(); i != upperlines.end();++i)
-        {
-            i->erase(std::remove(i->begin(), i->end(), *best),
-                       i->end());
-        }
-
+        usedlines[best] = true;
+        newVector.push_back(sr[best]);
 
     }
     return newVector;
@@ -387,9 +399,9 @@ void CFGLayer::sortHorizontalLines()
         ++begin2;
     }
 
-    auto temp1 = innerSortHorizontalLines(ownedHorizontalLines.begin(),begin1);
-    auto temp2 = innerSortHorizontalLines(begin1,begin2);
-    auto temp3 = innerSortHorizontalLines(begin2,ownedHorizontalLines.end());
+    auto temp1 = innerSortHorizontalLines(ownedHorizontalLines.begin(),begin1,0);
+    auto temp2 = innerSortHorizontalLines(begin1,begin2,1);
+    auto temp3 = innerSortHorizontalLines(begin2,ownedHorizontalLines.end(),2);
 
     ownedHorizontalLines.clear();
     ownedHorizontalLines.insert(ownedHorizontalLines.end(), temp1.begin(), temp1.end());

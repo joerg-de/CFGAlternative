@@ -224,7 +224,7 @@ void VerticalLineOwner::PullVerticalLines()
             negspace = line->getUsedLineBinder()->getSeekFreeSpacePositive();
             val = std::min(pull,negspace);
         }
-        if(!line->getUsedLineBinder()->canSeek(val)) //todo this is sometimes a bad sort
+        if(!line->getUsedLineBinder()->canSeek(val))
             continue;
         line->getUsedLineBinder()->seek(val);
     }

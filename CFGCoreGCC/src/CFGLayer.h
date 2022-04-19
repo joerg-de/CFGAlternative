@@ -105,7 +105,7 @@ class CFGLayer : public VerticalLineOwner, public HorizontalLineOwner {
 
     int FixyReversed(HorizontalLine * line);
 
-    std::vector<HorizontalLine *> innerSortHorizontalLines(std::vector< HorizontalLine* >::iterator begin,std::vector< HorizontalLine* >::iterator end);
+    std::vector<HorizontalLine *> innerSortHorizontalLines(std::vector< HorizontalLine* >::iterator begin,std::vector< HorizontalLine* >::iterator end, int type);
 
     int depth;
     unsigned int height;
