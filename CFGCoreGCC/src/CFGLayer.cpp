@@ -341,7 +341,7 @@ std::vector< HorizontalLine* > CFGLayer::innerSortHorizontalLines(std::vector< H
             	    	//check if there is a line that can overlap
             	    	if(j != i && !usedlines[j] && begin[j]->isDown() && begin[j]->getPrev() == nullptr)
             	    	{
-            	    		if (begin[j]->getxToUpperVertical() == begin[i]->getxToLowerVertical())
+            	    		if (inrange(begin[j]->getxToUpperVertical() - begin[i]->getxToLowerVertical(),vertikalLineMinOffset))
             	    		{
             	    			overlap = true;
             	    		}

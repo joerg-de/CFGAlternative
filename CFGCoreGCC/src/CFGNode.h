@@ -99,6 +99,9 @@ class CFGNode : public VerticalLineOwner {
     bool selfCheck();
 
  private:
+
+    bool tryFixIx(int maxSkips);
+
     int depth = 0;
     CFGLayer* layer;
     std::vector< CFGEdge* > inEdge;
