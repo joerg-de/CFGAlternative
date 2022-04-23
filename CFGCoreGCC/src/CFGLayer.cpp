@@ -57,13 +57,23 @@ CFGLayer::CFGLayer(CFGLayer* prev)
 void CFGLayer::routeLines()
 {
     //set all routes for the lines in the layer
-	for(auto templine : ownedHorizontalLines)
+	for(HorizontalLine* templine : ownedHorizontalLines)
     {
         if(templine->getLowerVertical()->isIOLine())
             continue;
 
         VerticalLine* line = templine->getLowerVertical();
         int inLinex = templine->getUpperVertical()->getx();
+        CFGNode* dest;
+        if(line->edge->isDown())
+        {
+        	dest = templine->getEdge()->getDest();
+        }
+        else
+        {
+        	dest = templine->getEdge()->getSrc();
+        }
+        int outLinex = dest->getx() + dest->getWidth()/2;
         CFGEdge::Binding bind = line->getEdge()->getBinding();
         //if no binding update binding
         if(bind == CFGEdge::Binding::NotSet)
@@ -91,7 +101,10 @@ void CFGLayer::routeLines()
 
                     current = current->getNext();
                 }
-                if(std::abs(inLinex - maxRight) > std::abs(inLinex - minLeft))
+                int distRight = std::abs(inLinex - maxRight) + std::abs(outLinex - maxRight);
+                int distLeft = std::abs(inLinex - minLeft) + std::abs(outLinex - minLeft);
+
+                if( distRight > distLeft)
                     bind = CFGEdge::Binding::Left;
                 else
                     bind = CFGEdge::Binding::Right;
