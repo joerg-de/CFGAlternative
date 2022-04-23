@@ -66,14 +66,14 @@ int main() {
                             NULL);
     if (hPipe == INVALID_HANDLE_VALUE)
     {
-		printf("CreateNamedPipe Error. (%lu)", GetLastError());
+		printf("CreateNamedPipe Error. (%u)", GetLastError());
 		return -1;
     }
     while (true)
     {
         if (ConnectNamedPipe(hPipe, NULL) == FALSE)   // wait for someone to connect to the pipe
         {
-    		printf("ConnectNamedPipe Error. (%lu)", GetLastError());
+    		printf("ConnectNamedPipe Error. (%u)", GetLastError());
     		return -1;
         }
         {
@@ -81,18 +81,18 @@ int main() {
         	unsigned int numNodes;
         	if (ReadFile(hPipe, &numNodes, sizeof(numNodes), &dwRead, NULL) == FALSE || sizeof(numNodes) != dwRead)
         	{
-        		printf("pipe Error get numNodes. (%lu)", GetLastError());
+        		printf("pipe Error get numNodes. (%u)", GetLastError());
         		return -1;
         	}
         	NodeInfoStruct * str1 = (NodeInfoStruct *)malloc(sizeof(NodeInfoStruct)*numNodes);
         	if (!str1)
         	{
-        		printf("malloc Error. (%lu)", GetLastError());
+        		printf("malloc Error. (%u)", GetLastError());
         		return -1;
         	}
         	if (ReadFile(hPipe, str1, sizeof(NodeInfoStruct)*numNodes , &dwRead, NULL) == FALSE || dwRead != sizeof(NodeInfoStruct)*numNodes)
         	{
-        		printf("pipe Error get Nodes. (%lu)", GetLastError());
+        		printf("pipe Error get Nodes. (%u)", GetLastError());
         		return -1;
         	}
         	for (unsigned int i = 0; i < numNodes;i++)
@@ -105,18 +105,18 @@ int main() {
         	unsigned int numEdges;
         	if (ReadFile(hPipe, &numEdges, sizeof(numEdges), &dwRead, NULL) == FALSE || sizeof(numEdges) != dwRead)
         	{
-        		printf("pipe Error get numEdges. (%lu)", GetLastError());
+        		printf("pipe Error get numEdges. (%u)", GetLastError());
         		return -1;
         	}
         	EdgeInfoStruct * str2 = (EdgeInfoStruct *)malloc(sizeof(EdgeInfoStruct)*numEdges);
         	if (!str2)
         	{
-        		printf("malloc Error. (%lu)", GetLastError());
+        		printf("malloc Error. (%u)", GetLastError());
         		return -1;
         	}
         	if (ReadFile(hPipe, str2, sizeof(EdgeInfoStruct)*numEdges , &dwRead, NULL) == FALSE || dwRead != sizeof(EdgeInfoStruct)*numEdges)
         	{
-        		printf("pipe Error get Edges. (%lu)", GetLastError());
+        		printf("pipe Error get Edges. (%u)", GetLastError());
         		return -1;
         	}
         	for (unsigned int i = 0; i < numEdges;i++)
@@ -130,7 +130,7 @@ int main() {
         	unsigned int startID;
         	if (ReadFile(hPipe, &startID, sizeof(startID), &dwRead, NULL) == FALSE || sizeof(startID) != dwRead)
         	{
-        		printf("pipe Error get numEdges. (%lu)", GetLastError());
+        		printf("pipe Error get numEdges. (%u)", GetLastError());
         		return -1;
         	}
         	cfg.solve(*cfg.getNodes()->at(startID));
@@ -144,7 +144,7 @@ int main() {
         		s.y = elem->gety() + InVerticalLineOffset;
             	if (WriteFile(hPipe, &s, sizeof(s), &dwRead, NULL) == FALSE || sizeof(s) != dwRead)
             	{
-            		printf("pipe Error send Node. (%lu)", GetLastError());
+            		printf("pipe Error send Node. (%u)", GetLastError());
             		return -1;
             	}
         	}
@@ -158,7 +158,7 @@ int main() {
     		unsigned int edgesNum = edges.size();
 			if (WriteFile(hPipe, &edgesNum, sizeof(edgesNum), &dwRead, NULL) == FALSE || sizeof(edgesNum) != dwRead)
 			{
-				printf("pipe Error send edgesNum. (%lu)", GetLastError());
+				printf("pipe Error send edgesNum. (%u)", GetLastError());
 				return -1;
 			}
 
@@ -168,7 +168,7 @@ int main() {
         		unsigned int num = elem->getVerticalLines()->size() - 1;
 				if (WriteFile(hPipe, &num, sizeof(num), &dwRead, NULL) == FALSE || sizeof(num) != dwRead)
 				{
-					printf("pipe Error send EdgeSize. (%lu)", GetLastError());
+					printf("pipe Error send EdgeSize. (%u)", GetLastError());
 					return -1;
 				}
 				CFGNode* src = elem->getSrc();
@@ -176,13 +176,13 @@ int main() {
 				int idt = src->getID();
 				if (WriteFile(hPipe, &idt, sizeof(idt), &dwRead, NULL) == FALSE || sizeof(idt) != dwRead)
 				{
-					printf("pipe Error send Src. (%lu)", GetLastError());
+					printf("pipe Error send Src. (%u)", GetLastError());
 					return -1;
 				}
 				idt = dest->getID();
 				if (WriteFile(hPipe, &idt, sizeof(idt), &dwRead, NULL) == FALSE || sizeof(idt) != dwRead)
 				{
-					printf("pipe Error send Dest. (%lu)", GetLastError());
+					printf("pipe Error send Dest. (%u)", GetLastError());
 					return -1;
 				}
 
@@ -201,7 +201,7 @@ int main() {
 
 						if (WriteFile(hPipe, &s, sizeof(s), &dwRead, NULL) == FALSE || sizeof(s) != dwRead)
 						{
-							printf("pipe Error send Edge. (%lu)", GetLastError());
+							printf("pipe Error send Edge. (%u)", GetLastError());
 							return -1;
 						}
 					}
@@ -221,7 +221,7 @@ int main() {
 
 						if (WriteFile(hPipe, &s, sizeof(s), &dwRead, NULL) == FALSE || sizeof(s) != dwRead)
 						{
-							printf("pipe Error send Edge. (%lu)", GetLastError());
+							printf("pipe Error send Edge. (%u)", GetLastError());
 							return -1;
 						}
 					}
@@ -234,11 +234,11 @@ int main() {
 				delete i;
 
         	if (!FlushFileBuffers(hPipe)) {
-        		printf("FlushFileBuffers failed. (%lu)", GetLastError());
+        		printf("FlushFileBuffers failed. (%u)", GetLastError());
         		return -1;
         	}
         	if (!DisconnectNamedPipe(hPipe)) {
-        		printf("DisconnectNamedPipe failed. (%lu)", GetLastError());
+        		printf("DisconnectNamedPipe failed. (%u)", GetLastError());
         		return -1;
         	}
         }
